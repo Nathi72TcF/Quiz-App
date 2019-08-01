@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar class="Align" color="primary">
+    <ion-title>Quiz</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let quiz of Questionz">
+    <ion-card-header>
+      <ion-card-title>
+        {{ quiz.Counter }}. {{ quiz.Questions }}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-radio-group>
+          <ion-list-header>
+            <ion-label></ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>{{ quiz.Answer }}</ion-label>
+            <ion-radio slot="start" value="Man" selected></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

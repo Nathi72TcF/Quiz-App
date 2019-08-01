@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar class="Align" color="primary">
+    <ion-title>Category</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="Align">
+  <div *ngFor ="let cat of Category">
+    <ion-card [routerLink]="['/quiz']" (click) ="setID(cat)">
+      <ion-card-content>
+          <h3><b><strong>{{ cat.categories }}</strong></b></h3>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-content class="Align">
+    <ion-button [routerLink]="['/home']" shape="round">Home</ion-button><br>
+    <!-- <ion-button (click)="ViewCategories()" shape="round">check</ion-button> -->
+</ion-content>

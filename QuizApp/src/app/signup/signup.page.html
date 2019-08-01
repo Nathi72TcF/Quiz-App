@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar class="Align" color="primary">
+    <ion-title>Register User</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="Align">
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input [(ngModel)]="name" name="name" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Surname</ion-label>
+      <ion-input [(ngModel)]="surname" name="surname" type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Age</ion-label>
+      <ion-input [(ngModel)]="age" name="age" type="age" maxlength="2"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contact</ion-label>
+      <ion-input [(ngModel)]="contact" name="contact" type="tel" maxlength="10"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="email" name="email" type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password" minlength="7"></ion-input>
+    </ion-item>
+    <div padding text-center>
+       <ion-button *ngIf="name && surname && age && contact && email && password" (click)="signup()" [routerLink]="['/home']" color="primary" shape="round">Register</ion-button>
+       <ion-button *ngIf="!name && !surname && !age && !contact && !email && !password" color="danger" shape="round">Register New User</ion-button>
+      </div>
+  </ion-card>
+</ion-content>
