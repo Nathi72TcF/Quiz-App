@@ -14,8 +14,8 @@ export class QuizPage implements OnInit {
   question;
   userId;
   ID;
-  answer;
   Answers = [];
+  answer;
   Counter = 0;
 
   constructor(
@@ -37,15 +37,21 @@ export class QuizPage implements OnInit {
           Answer: this.answer
         });
         console.log(this.Questionz);
+        console.log(this.Answers);
         this.Answers.push({
+          Counter: this.Counter,
           Answer: this.answer
         });
         console.log(this.Answers);
       });
     });
+
+    
     }
 
   ngOnInit() {
   }
 
 }
+
+// this.answer = childSnapshot.val();

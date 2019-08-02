@@ -11,15 +11,15 @@
         {{ quiz.Counter }}. {{ quiz.Questions }}
       </ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content *ngFor="let quizzy of Answers">
       <ion-list>
         <ion-radio-group>
           <ion-list-header>
             <ion-label></ion-label>
           </ion-list-header>
           <ion-item>
-            <ion-label>{{ quiz.Answer }}</ion-label>
-            <ion-radio slot="start" value="Man" selected></ion-radio>
+            <ion-label>{{ quizzy.Counter }}.{{ quizzy.Answer }}</ion-label>
+            <ion-radio slot="start" selected></ion-radio>
           </ion-item>
         </ion-radio-group>
       </ion-list>
