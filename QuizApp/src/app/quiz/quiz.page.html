@@ -8,19 +8,43 @@
   <ion-card *ngFor="let quiz of Questionz">
     <ion-card-header>
       <ion-card-title>
-        {{ quiz.Counter }}. {{ quiz.Questions }}
+        {{ quiz.counter }}. {{ quiz.key }}
       </ion-card-title>
     </ion-card-header>
-    <ion-card-content *ngFor="let quizzy of Answers">
+    <ion-card-content >
       <ion-list>
         <ion-radio-group>
           <ion-list-header>
             <ion-label></ion-label>
           </ion-list-header>
+          <!-- Q 1 -->
           <ion-item>
-            <ion-label>{{ quizzy.Counter }}.{{ quizzy.Answer }}</ion-label>
+            <ion-label>
+              {{ quiz.option[0] }}
+            </ion-label>
             <ion-radio slot="start" selected></ion-radio>
           </ion-item>
+          <!-- Q 2 -->
+          <ion-item>
+              <ion-label>
+                {{ quiz.option[1] }}
+              </ion-label>
+              <ion-radio slot="start" selected></ion-radio>
+          </ion-item>
+          <!-- Q 3 -->
+          <ion-item>
+              <ion-label>
+                {{ quiz.option[2] }}
+              </ion-label>
+              <ion-radio slot="start" selected></ion-radio>
+          </ion-item>
+          <!-- Q 4 -->
+          <ion-item>
+              <ion-label>
+                {{ quiz.option[3] }}
+              </ion-label>
+              <ion-radio slot="start" selected></ion-radio>
+            </ion-item>
         </ion-radio-group>
       </ion-list>
     </ion-card-content>

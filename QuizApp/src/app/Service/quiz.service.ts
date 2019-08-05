@@ -57,6 +57,7 @@ export class QuizService {
   getID(cat) {
     this.userId = cat.ID;
   }
+
   Return_ID() {
     return this.userId;
   }
@@ -66,30 +67,3 @@ export class QuizService {
   }
 
 }
-
-// //////// old code
-    // const rootRef = firebase.database().ref().child('Quiz/').orderByChild('cat_001').equalTo('cat_001').on('value', (snapshot) => {
-    //   snapshot.forEach((child) => {
-    //     const data1 = child.val();
-    //     console.log(data1.cat_001 + ' ' + data1.cat_002 + ' ' + data1.cat_003);
-    //   });
-    // }, (error) => {
-    //   console.log(error);
-    // }
-    // );
-    // console.log(rootRef);
-
-    // ////// old code (down)
-
-    // this.Question.push(question);
-    //     console.log(this.Question);
-    //     this.Option.push(childData);
-    //     console.log(childData);
-    //   });
-    //   console.log(this.Question);
-    //   this.Option.forEach((datas) => {
-    //     console.log(datas);
-    //     console.log(Option);
-    //   });
-    //   console.log(this.Question);
-    // });

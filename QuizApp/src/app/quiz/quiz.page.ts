@@ -11,11 +11,9 @@ import * as firebase from 'firebase';
 export class QuizPage implements OnInit {
 
   Questionz = [];
-  question;
+  options;
   userId;
   ID;
-  Answers = [];
-  answer;
   Counter = 0;
 
   constructor(
@@ -25,33 +23,26 @@ export class QuizPage implements OnInit {
       this.ID = this.quizService.Return_ID();
       const rootRef = firebase.database().ref().child('Quiz/' + this.ID);
       rootRef.once('value', (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        this.question = childSnapshot.key;
-        this.answer = childSnapshot.val();
-        this.Counter++;
-        console.log(this.question);
-        console.log(this.answer);
-        this.Questionz.push({
-          Counter: this.Counter,
-          Questions: this.question,
-          Answer: this.answer
-        });
-        console.log(this.Questionz);
-        console.log(this.Answers);
-        this.Answers.push({
-          Counter: this.Counter,
-          Answer: this.answer
-        });
-        console.log(this.Answers);
-      });
-    });
+        const value = snapshot.val();
 
-    
+        // tslint:disable-next-line: forin
+        for (const key in value) {
+          this.Counter++;
+          this.Questionz.push({
+            counter: this.Counter,
+            key: key,
+            option: Object.keys(value[key])
+          });
+          console.log(this.Questionz);
+          console.log(key);
+          console.log(value);
+          this.options = Object.keys(value[key]);
+        }
+      });
+
     }
 
   ngOnInit() {
   }
 
 }
-
-// this.answer = childSnapshot.val();
