@@ -6,6 +6,20 @@
 
 <ion-content>
   <ion-card *ngFor="let quiz of Questionz">
+      <h3><b>{{ quiz.counter }}. {{ quiz.Question }}</b></h3>
+      <ion-list>
+        <ion-radio-group>
+          <ion-item *ngFor="let tcf of quiz.Answer">
+            <ion-label>{{ tcf }}</ion-label>
+            <ion-radio slot="start" ></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+  </ion-card>
+</ion-content>
+
+<!-- *ngFor="let a of x.Answer"
+  <ion-card *ngFor="let quiz of Questionz">
     <ion-card-header>
       <ion-card-title>
         {{ quiz.counter }}. {{ quiz.key }}
@@ -13,40 +27,46 @@
     </ion-card-header>
     <ion-card-content >
       <ion-list>
-        <ion-radio-group>
+        <ion-radio-group (ionChange)="answers1($event)">
           <ion-list-header>
             <ion-label></ion-label>
           </ion-list-header>
-          <!-- Q 1 -->
+ Q 1 
           <ion-item>
             <ion-label>
               {{ quiz.option[0] }}
             </ion-label>
-            <ion-radio slot="start" selected></ion-radio>
+            <ion-radio slot="start" value="{{ quiz.option[0] }}"></ion-radio>
           </ion-item>
-          <!-- Q 2 -->
+        </ion-radio-group>
+        <ion-radio-group (ionChange)="answers2($event)">
+ Q 2 
           <ion-item>
               <ion-label>
                 {{ quiz.option[1] }}
               </ion-label>
-              <ion-radio slot="start" selected></ion-radio>
+              <ion-radio slot="start" value="{{ quiz.option[1] }}"></ion-radio>
           </ion-item>
-          <!-- Q 3 -->
+        </ion-radio-group>
+        <ion-radio-group (ionChange)="answers3($event)">
+ Q 3 
           <ion-item>
               <ion-label>
                 {{ quiz.option[2] }}
               </ion-label>
-              <ion-radio slot="start" selected></ion-radio>
+              <ion-radio slot="start" value="{{ quiz.option[2] }}"></ion-radio>
           </ion-item>
-          <!-- Q 4 -->
+        </ion-radio-group>
+        <ion-radio-group (ionChange)="answers4($event)">
+ Q 4 
           <ion-item>
               <ion-label>
                 {{ quiz.option[3] }}
               </ion-label>
-              <ion-radio slot="start" selected></ion-radio>
+              <ion-radio slot="start" value="{{ quiz.option[3] }}"></ion-radio>
             </ion-item>
         </ion-radio-group>
       </ion-list>
     </ion-card-content>
   </ion-card>
-</ion-content>
+ -->

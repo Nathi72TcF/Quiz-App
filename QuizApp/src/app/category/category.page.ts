@@ -1,6 +1,5 @@
 import { QuizService } from './../Service/quiz.service';
 import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-category',
@@ -9,9 +8,6 @@ import * as firebase from 'firebase';
 })
 export class CategoryPage implements OnInit {
 
-  database = firebase.database();
-
-  myCategories;
   Category;
   id;
   // test items
@@ -21,8 +17,8 @@ export class CategoryPage implements OnInit {
   constructor(
     public quizService: QuizService,
     ) {
-      this.myCategories = this.quizService.getcat(this.categorykey);
-      this.Category = this.quizService.getCategory();
+      // this.myCategories = this.quizService.getcat();
+      this.Category = this.quizService.getcat();
     }
 
   ngOnInit() {

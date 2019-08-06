@@ -20,13 +20,10 @@ export class QuizService {
   myCategories = [];
   catKey;
   // quiz ts
-  Question = [];
-  question;
-  categorykey;
-  QuizID;
-  IDs;
-  answer;
+  Questionz = [];
+  options;
   Answers = [];
+  ID;
   Counter = 0;
 
   // data from category database
@@ -35,23 +32,22 @@ export class QuizService {
   constructor() { }
 
   // data for category
-  getcat(categorykey) {
+  getcat() {
   const data = firebase.database().ref().child('categories');
   data.on('child_added', snap => {
     this.name = snap.child('catName').val();
     console.log(this.name);
     this.id = snap.child('ID').val();
     console.log(this.id);
-    const key = snap.key;
-    console.log('Heres your key: ' + key);
+    // console.log('Heres your key: ' + key);
     this.myCategory.push({
     ID: this.id,
     categories: this.name,
-    keys: key
   });
     console.log(this.myCategory);
     // console.log(this.myCategory + ' ' + key);
     });
+    return this.myCategory;
   }
 
   getID(cat) {
@@ -62,8 +58,27 @@ export class QuizService {
     return this.userId;
   }
 
-  getCategory() {
-    return this.myCategory;
+  // Quiz TS Code
+  firebaseQuiz(ID) {
+    const rootRef = firebase.database().ref().child('Quiz/' + ID);
+    rootRef.once('value', (snapshot) => {
+      const value = snapshot.val();
+
+      // tslint:disable-next-line: forin
+      for (const key in value) {
+        this.Counter++;
+        this.Questionz.push({
+          counter: this.Counter,
+          Question: key,
+          Answer: Object.keys(value[key]),
+          value: Object.values(value[key])
+        });
+        console.log(this.Questionz);
+        console.log(key);
+        console.log(value);
+      }
+    });
+    return this.Questionz;
   }
 
 }

@@ -1,7 +1,6 @@
 import { QuizService } from './../Service/quiz.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-quiz',
@@ -10,37 +9,38 @@ import * as firebase from 'firebase';
 })
 export class QuizPage implements OnInit {
 
-  Questionz = [];
-  options;
-  userId;
-  ID;
-  Counter = 0;
+  Questionz;
+  id;
 
   constructor(
     public quizService: QuizService,
     public router: ActivatedRoute
     ) {
-      this.ID = this.quizService.Return_ID();
-      const rootRef = firebase.database().ref().child('Quiz/' + this.ID);
-      rootRef.once('value', (snapshot) => {
-        const value = snapshot.val();
+      this.id = this.quizService.Return_ID();
+      this.Questionz = this.quizService.firebaseQuiz(this.id);
+      console.log(this.Questionz);
+      console.log(this.id);
+     }
 
-        // tslint:disable-next-line: forin
-        for (const key in value) {
-          this.Counter++;
-          this.Questionz.push({
-            counter: this.Counter,
-            key: key,
-            option: Object.keys(value[key])
-          });
-          console.log(this.Questionz);
-          console.log(key);
-          console.log(value);
-          this.options = Object.keys(value[key]);
-        }
-      });
+    // answers1(event) {
+    //   this.answer1 = event.detail.value;
+    //   console.log(this.answer1);
+    // }
 
-    }
+    // answers2(event) {
+    //   this.answer2 = event.detail.value;
+    //   console.log(this.answer2);
+    // }
+
+    // answers3(event) {
+    //   this.answer3 = event.detail.value;
+    //   console.log(this.answer3);
+    // }
+
+    // answers4(event) {
+    //   this.answer4 = event.detail.value;
+    //   console.log(this.answer4);
+    // }
 
   ngOnInit() {
   }
