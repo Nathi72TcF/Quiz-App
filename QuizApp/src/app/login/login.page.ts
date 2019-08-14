@@ -16,7 +16,6 @@ export class LoginPage implements OnInit {
 
   constructor(
     public quizService: QuizService,
-    public userService: UserService,
     public Alert: AlertController,
     public loadingCtrl: LoadingController
     ) { }
@@ -25,7 +24,7 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    this.userService.login(this.email, this.password);
+    this.quizService.login(this.email, this.password);
   }
 
   async resetepassword() {
@@ -45,7 +44,7 @@ export class LoginPage implements OnInit {
         text: 'send',
         handler: (email) => {
           console.log('email sent');
-          this.userService.resetepassword(email);
+          this.quizService.resetepassword(email);
         }
       }]
     });

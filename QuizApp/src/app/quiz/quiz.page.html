@@ -5,68 +5,19 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let quiz of Questionz">
-      <h3><b>{{ quiz.counter }}. {{ quiz.Question }}</b></h3>
-      <ion-list>
-        <ion-radio-group>
-          <ion-item *ngFor="let tcf of quiz.Answer">
-            <ion-label>{{ tcf }}</ion-label>
-            <ion-radio slot="start" ></ion-radio>
-          </ion-item>
-        </ion-radio-group>
+  <ion-card>
+    <ion-list *ngFor="let quiz of Questionz" (ionChange)="Score($event, quiz.Question)">
+      
+        <h3><b>{{ quiz.counter }}. {{ quiz.Question }}</b></h3>
+          <ion-radio-group>
+            <ion-item *ngFor="let tcf of quiz.Answer">
+              <ion-label>{{ tcf }}</ion-label>
+              <ion-radio slot="start" value="{{ tcf }}"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
       </ion-list>
+  </ion-card>
+  <ion-card class="Align">
+      <ion-button shape="round" (click)="submit()">Submit</ion-button>
   </ion-card>
 </ion-content>
-
-<!-- *ngFor="let a of x.Answer"
-  <ion-card *ngFor="let quiz of Questionz">
-    <ion-card-header>
-      <ion-card-title>
-        {{ quiz.counter }}. {{ quiz.key }}
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content >
-      <ion-list>
-        <ion-radio-group (ionChange)="answers1($event)">
-          <ion-list-header>
-            <ion-label></ion-label>
-          </ion-list-header>
- Q 1 
-          <ion-item>
-            <ion-label>
-              {{ quiz.option[0] }}
-            </ion-label>
-            <ion-radio slot="start" value="{{ quiz.option[0] }}"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-        <ion-radio-group (ionChange)="answers2($event)">
- Q 2 
-          <ion-item>
-              <ion-label>
-                {{ quiz.option[1] }}
-              </ion-label>
-              <ion-radio slot="start" value="{{ quiz.option[1] }}"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-        <ion-radio-group (ionChange)="answers3($event)">
- Q 3 
-          <ion-item>
-              <ion-label>
-                {{ quiz.option[2] }}
-              </ion-label>
-              <ion-radio slot="start" value="{{ quiz.option[2] }}"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-        <ion-radio-group (ionChange)="answers4($event)">
- Q 4 
-          <ion-item>
-              <ion-label>
-                {{ quiz.option[3] }}
-              </ion-label>
-              <ion-radio slot="start" value="{{ quiz.option[3] }}"></ion-radio>
-            </ion-item>
-        </ion-radio-group>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
- -->

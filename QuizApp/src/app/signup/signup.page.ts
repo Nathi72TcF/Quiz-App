@@ -22,15 +22,14 @@ export class SignupPage implements OnInit {
 
   constructor(
     public quizService: QuizService,
-    public formBuilder: FormBuilder,
-    public userService: UserService
+    public formBuilder: FormBuilder
     ) { }
 
   ngOnInit() {
   }
 
   signup() {
-    this.userService.signup(
+    this.quizService.signup(
     this.email,
     this.password,
     this.name,

@@ -12,12 +12,11 @@ export class HomePage {
 
   constructor(
     public quizService: QuizService,
-    public userService: UserService,
     private router: Router
     ) {}
 
   logout() {
-    this.userService.logout();
+    this.quizService.logout();
     this.navigateHome();
   }
 
