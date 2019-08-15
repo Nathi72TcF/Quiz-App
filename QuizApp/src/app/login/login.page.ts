@@ -1,7 +1,7 @@
-import { UserService } from './../Service/user.service';
 import { QuizService } from './../Service/quiz.service';
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController } from '@ionic/angular';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-login',

@@ -8,30 +8,32 @@ export class QuizService {
 
   database = firebase.database();
 
-  // log in details
-
-   name;
-
   // getting from database
   userId;
-  catID;
+  username;
+  userUID;
   email;
 
-  namecat;
+  name;
   id;
 
+  // database objects (quiz ts)
+  catName;
+  myCategories = [];
+  catKey;
   // quiz ts
   Questionz = [];
+  options;
+  Answers = [];
+  ID;
   Counter = 0;
-
-  gameArray = [];
 
   // data from category database
   myCategory = [];
 
   constructor() { }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // log in, sign up and register code
   login(email, password) {
     firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
@@ -58,6 +60,7 @@ export class QuizService {
       console.log(user['user'].uid);
 
       this.userId = user['user'].uid;
+      this.userUID = user['user'].uid;
       this.email = user['user'].email;
 
       // inserting into database
@@ -103,43 +106,46 @@ export class QuizService {
       console.log(errorCode);
     });
   }
+
   ////////////////////////////////////////////////////////////////////////////////
 
   // data for category
   getcat() {
-  const data = firebase.database().ref().child('categories');
-  data.on('child_added', snap => {
-    this.namecat = snap.child('catName').val();
-    console.log(this.namecat);
+    this.clearArray(this.myCategory);
+    const data = firebase.database().ref().child('categories');
+    data.on('child_added', snap => {
+    this.name = snap.child('catName').val();
+    // console.log(this.name);
     this.id = snap.child('ID').val();
-    console.log(this.id);
+    // console.log(this.id);
     // console.log('Heres your key: ' + key);
     this.myCategory.push({
     ID: this.id,
-    categories: this.namecat,
+    categories: this.name,
   });
-    console.log(this.myCategory);
+    // console.log(this.myCategory);
     // console.log(this.myCategory + ' ' + key);
     });
-  return this.myCategory;
+    return this.myCategory;
   }
 
-  Return_catID() {
-    return this.namecat;
+  UserInfor() {
+    return this.userUID;
   }
 
   getID(cat) {
-    this.catID = cat.ID;
+    this.userId = cat.ID;
   }
 
   Return_ID() {
     return this.userId;
   }
-  /////////////////////////////////////////////////////////////////////////////////
 
   // Quiz TS Code
-  firebaseQuiz(catID) {
-    const rootRef = firebase.database().ref().child('Quiz/' + catID);
+  firebaseQuiz(ID) {
+    this.Counter = 0;
+    this.clearArray(this.Questionz);
+    const rootRef = firebase.database().ref().child('Quiz/' + ID);
     rootRef.once('value', (snapshot) => {
       const value = snapshot.val();
 
@@ -152,13 +158,20 @@ export class QuizService {
           Answer: Object.keys(value[key]),
           value: Object.values(value[key])
         });
-        console.log(this.Questionz);
-        console.log(key);
-        console.log(value);
+        // console.log(this.Questionz);
+        // console.log(key);
+        // console.log(value);
       }
     });
+    console.log(this.Questionz);
+
     return this.Questionz;
   }
-  ///////////////////////////////////////////////////////////////////////////////
+
+  clearArray(array) {
+    for (let i = 0; i < array.length; i++) {
+      array.splice(i);
+  }
+ }
 
 }

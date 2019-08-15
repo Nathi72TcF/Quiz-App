@@ -1,7 +1,7 @@
 import { QuizService } from './../Service/quiz.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as firebase from 'firebase'
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-quiz',
@@ -11,26 +11,31 @@ import * as firebase from 'firebase'
 export class QuizPage implements OnInit {
 
   Questionz = [];
-  userId;
-  catID;
-  namecat;
+  Userids;
+  ID;
 
+  questionSet = [];
+  Answerz = [];
   gameArray = [];
   index = 0;
   correctAnswer;
   scoreBoolean;
 
+  // getting user details
+  user = firebase.auth().currentUser;
+  uid;
+
   constructor(
     public quizService: QuizService,
     public router: ActivatedRoute
     ) {
-      this.userId = this.quizService.Return_ID();
-      this.Questionz = this.quizService.firebaseQuiz(this.catID);
-      this.namecat = this.quizService.Return_catID();
-      // console.log(this.Questionz);
+      this.ID = this.quizService.Return_ID();
+      this.Questionz = this.quizService.firebaseQuiz(this.ID);
+      this.Userids = this.quizService.UserInfor();
      }
 
   ngOnInit() {
+
   }
 
   pushToGameArray(Question, Answer, correctAnswer, scoreBoolean) {
@@ -40,7 +45,7 @@ export class QuizPage implements OnInit {
       correctAnswer: correctAnswer, // undefined
       scoreBoolean: scoreBoolean //undefined
     });
-    console.log(this.gameArray);
+    // console.log(this.gameArray);
   }
 
   Score(event, Question) {
@@ -48,12 +53,12 @@ export class QuizPage implements OnInit {
     const Answer: string = event.detail.value;
     let correctAnswer: string;
     let scoreBoolean: string;
-    console.log(question);
-    console.log(Answer);
+    // console.log(question);
+    // console.log(Answer);
 
     // second phase
     if (this.Questionz.length >= 1) {
-      console.log(this.Questionz);
+      // console.log(this.Questionz);
       console.log(question);
       for (let i = 0; i < this.Questionz.length; i++) {
         // console.log(i);
@@ -63,7 +68,7 @@ export class QuizPage implements OnInit {
             if (this.Questionz[i].value[n]) {
               // console.log(this.Questionz[i].Answer[n]);
               this.correctAnswer = this.Questionz[i].Answer[n];
-              console.log(this.correctAnswer);
+              // console.log(this.correctAnswer);
             }
           }
         }
@@ -82,7 +87,7 @@ export class QuizPage implements OnInit {
     // 1st phase
     if (this.gameArray.length === 0) {
       this.pushToGameArray(Question, Answer, this.correctAnswer, this.scoreBoolean);
-      console.log('pushed to array successfully');
+      // console.log('pushed to array successfully');
     } else if (this.gameArray.length > 0) {
       // console.log('Entered into else clause');
       for (let i = 0; i < this.gameArray.length; i++) {
@@ -108,6 +113,12 @@ export class QuizPage implements OnInit {
     }
     console.log(this.gameArray);
     console.log(this.index);
+
+    // getting user infor
+    if (this.user != null) {
+      this.uid = this.user.uid;
+      console.log(this.uid);
+    }
   }
 
   submit() {
@@ -126,17 +137,17 @@ export class QuizPage implements OnInit {
 
   submitFirebase() {
     console.log(this.gameArray);
-    let newPostKey = firebase.database().ref().child('Results/' + this.userId + '/').push().key;
+    let newPostKey = firebase.database().ref().child('Results/' + this.uid + '/').push().key;
     console.log(newPostKey);
     for (let i = 0; i < this.gameArray.length; i++) {
-      firebase.database().ref().child('Results/' + '/' + this.userId + '/' + newPostKey + '/' + this.namecat + '/' + this.gameArray[i].gameQuestions).push({
+      firebase.database().ref().child('Results/' + '/' + this.uid + '/' + newPostKey + '/' + this.ID + '/' + this.gameArray[i].gameQuestions).push({
         userAnswer: this.gameArray[i].correctAnswer,
         userBooleanScore: this.gameArray[i].scoreBoolean
       });
-      console.log(newPostKey);
+      console.log(this.Userids);
     }
     // firebase.database().ref().child('Results/' + this.userId + '/' + newPostKey + '/' + this.name + '/').update({userScore: gamescore});
     console.log("Done Everything");
   }
 
-} // firebase.database().ref().child('Results/' this
+}
