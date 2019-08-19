@@ -7,7 +7,6 @@
 <ion-content>
   <ion-card>
     <ion-list *ngFor="let quiz of Questionz" (ionChange)="Score($event, quiz.Question)">
-      
         <h3><b>{{ quiz.counter }}. {{ quiz.Question }}</b></h3>
           <ion-radio-group>
             <ion-item *ngFor="let tcf of quiz.Answer">
@@ -18,6 +17,6 @@
       </ion-list>
   </ion-card>
   <ion-card class="Align">
-      <ion-button shape="round" (click)="submit()">Submit</ion-button>
+    <ion-button shape="round" (click)="submit(); presentToast()" [routerLink]="['/results']">Submit</ion-button>
   </ion-card>
 </ion-content>

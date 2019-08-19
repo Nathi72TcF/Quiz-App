@@ -31,7 +31,7 @@
       <ion-input [(ngModel)]="password" name="password" type="password" minlength="7"></ion-input>
     </ion-item>
     <div padding text-center>
-       <ion-button *ngIf="name && surname && age && contact && email && password" (click)="signup()" [routerLink]="['/home']" color="primary" shape="round">Register</ion-button>
+       <ion-button *ngIf="name && surname && age && contact && email && password" (click)="signup()" color="primary" shape="round">Register</ion-button>
        <ion-button *ngIf="!name && !surname && !age && !contact && !email && !password" color="danger" shape="round">Register New User</ion-button>
       </div>
   </ion-card>

@@ -23,7 +23,7 @@
     <a (click)="resetepassword()">Forgot Password?</a> -->
 
     <div padding text-center>
-      <ion-button *ngIf="email && password " ion-button color="primary" shape="round" [routerLink]="['/home']" (click)="login()">Login</ion-button><br>
+      <ion-button *ngIf="email && password " ion-button color="primary" shape="round" (click)="login()">Login</ion-button><br>
      <!-- Show dead button if form is not filled -->
      <ion-button *ngIf="!email && !password" ion-button color="danger" clear shape="round">Login Now</ion-button><br>
      <!-- other buttons -->

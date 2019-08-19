@@ -1,5 +1,4 @@
 import { Router } from '@angular/router';
-import { UserService } from './../Service/user.service';
 import { QuizService } from './../Service/quiz.service';
 import { Component } from '@angular/core';
 import * as firebase from 'firebase';
@@ -12,13 +11,24 @@ import * as firebase from 'firebase';
 export class HomePage {
 
 user = firebase.auth().currentUser;
+username = [];
 
-  userinfor;
+  uid;
+  name;
 
   constructor(
     public quizService: QuizService,
     private router: Router
-    ) { }
+    ) {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in.
+        } else {
+          // No user is signed in.
+          this.router.navigate(['/login']);
+        }
+      });
+     }
 
   logout() {
     this.quizService.logout();

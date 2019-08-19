@@ -31,40 +31,44 @@ export class QuizService {
   // data from category database
   myCategory = [];
 
+  // data from Results database
+  myResults = [];
+  score;
+  user;
+  uid;
+
   constructor() { }
 
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // log in, sign up and register code
   login(email, password) {
-    firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
+    return firebase.auth().signInWithEmailAndPassword(email, password).then((results) => {
+      console.log('Loged In');
+      console.log(results);
+      if (results) {
+        this.userUID = results['user'].uid;
+      }
+      return results;
+    }).catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorCode = error.message;
       console.log(errorCode);
-    }).then((results) => {
-      console.log('Loged In');
-      console.log(results);
+      return errorCode;
     });
   }
 
   signup(email, password, name, surname, age, contact) {
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorMessage);
-      // ...
-    }).then((user) => {
-      console.log('User Registerded');
-
-      console.log(user['user'].uid);
-
-      this.userId = user['user'].uid;
-      this.userUID = user['user'].uid;
-      this.email = user['user'].email;
+    return firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+      if (user) {
+        // console.log('User Registerded');
+        console.log(user);
+        this.userId = user['user'].uid;
+        this.userUID = user['user'].uid;
+        this.email = user['user'].email;
 
       // inserting into database
-      firebase.database().ref('users/' + this.userId).set({
+        firebase.database().ref('users/' + this.userId).set({
         username: name,
         surnamez: surname,
         agez: age,
@@ -77,6 +81,15 @@ export class QuizService {
             console.log('New User Saved');
           }
         });
+      }
+      return user;
+    }).catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorMessage);
+      return errorMessage;
+      // ...
     });
   }
 
@@ -130,6 +143,15 @@ export class QuizService {
   }
 
   UserInfor() {
+    firebase.auth().onAuthStateChanged((user) => {
+      // console.log(user);
+      if (user) {
+        this.userUID = user.uid;
+      } else {
+        // No user is signed in.
+      }
+    });
+
     return this.userUID;
   }
 
@@ -143,12 +165,13 @@ export class QuizService {
 
   // Quiz TS Code
   firebaseQuiz(ID) {
+
     this.Counter = 0;
     this.clearArray(this.Questionz);
     const rootRef = firebase.database().ref().child('Quiz/' + ID);
     rootRef.once('value', (snapshot) => {
       const value = snapshot.val();
-
+      // console.log(value);
       // tslint:disable-next-line: forin
       for (const key in value) {
         this.Counter++;
@@ -173,5 +196,48 @@ export class QuizService {
       array.splice(i);
   }
  }
+
+ ///////////////////////////////////////////////////////////////////////////////////
+ // get results from firebase
+ getResults(userId) {
+  this.Counter = 0;
+  this.clearArray(this.myResults);
+  const rootRef = firebase.database().ref().child('Results/' + userId);
+  rootRef.once('value', (snapshot) => {
+      const value = snapshot.val();
+      console.log(value);
+
+      // tslint:disable-next-line: forin
+      for (const key in value) {
+        this.myResults.push({
+          category_id: key,
+          value: Object.values(value[key]),
+          results: Object.keys(value[key]),
+          values: value
+        });
+        console.log(this.myResults);
+        console.log(key);
+        console.log(value);
+      }
+    });
+  return this.myResults;
+  // console.log(this.myResults);
+ }
+
+//  getResults() {
+//   var checking = firebase.database().ref().child('Results');
+//   checking.on('child_added', snap =>{
+//      this.score = snap.child('usersScore').val();
+//      let key = snap.key
+//      console.log('Heres your key: ' + key);
+//      console.log(this.score);
+//      this.myResults.push({
+//       usersScore: this. score,
+//       cal_key: key
+//   });
+//      console.log(this.myResults);
+//   });
+//   return this.myResults;
+// }
 
 }

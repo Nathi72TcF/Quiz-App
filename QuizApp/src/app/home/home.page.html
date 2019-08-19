@@ -10,6 +10,10 @@
   <div class="ion-padding">
     <img src="../../assets/images/quiz.jpg" width="100%" height="auto">
   </div>
+  <!-- <div *ngFor = "let users of username">
+    <p>Sure {{ users.name }}</p>
+  </div> -->
   <ion-button [routerLink]="['/category']" shape="round">Quiz Category</ion-button><br>
+  <ion-button [routerLink]="['/results']" shape="round">See Results</ion-button><br>
   <ion-button (click)="logout()" shape="round">Log Out</ion-button>
 </ion-content>

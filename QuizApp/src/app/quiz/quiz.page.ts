@@ -1,6 +1,7 @@
 import { QuizService } from './../Service/quiz.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import * as firebase from 'firebase';
 
 @Component({
@@ -24,10 +25,12 @@ export class QuizPage implements OnInit {
   // getting user details
   user = firebase.auth().currentUser;
   uid;
+  gamescore: number = 0;
 
   constructor(
     public quizService: QuizService,
-    public router: ActivatedRoute
+    public router: ActivatedRoute,
+    public toastController: ToastController
     ) {
       this.ID = this.quizService.Return_ID();
       this.Questionz = this.quizService.firebaseQuiz(this.ID);
@@ -122,15 +125,14 @@ export class QuizPage implements OnInit {
   }
 
   submit() {
-    let gamescore: number = 0;
     if (this.gameArray) {
       console.log(this.gameArray);
       for (let i = 0; i < this.gameArray.length; i++) {
         if (this.gameArray[i].scoreBoolean === true) {
-          gamescore++;
+          this.gamescore++;
         }
       }
-      console.log(gamescore);
+      console.log(this.gamescore);
     }
     this.submitFirebase();
   }
@@ -140,14 +142,26 @@ export class QuizPage implements OnInit {
     let newPostKey = firebase.database().ref().child('Results/' + this.uid + '/').push().key;
     console.log(newPostKey);
     for (let i = 0; i < this.gameArray.length; i++) {
-      firebase.database().ref().child('Results/' + '/' + this.uid + '/' + newPostKey + '/' + this.ID + '/' + this.gameArray[i].gameQuestions).push({
+      firebase.database().ref('Results/' + '/' + this.uid + '/' + this.ID + '/' + newPostKey + '/' + this.gameArray[i].gameQuestions).set({
         userAnswer: this.gameArray[i].correctAnswer,
         userBooleanScore: this.gameArray[i].scoreBoolean
       });
       console.log(this.Userids);
     }
-    // firebase.database().ref().child('Results/' + this.userId + '/' + newPostKey + '/' + this.name + '/').update({userScore: gamescore});
+    firebase.database().ref().child('Scores/' + this.uid + '/' + newPostKey + '/' + this.ID + '/' ).update({
+      usersScore: this.gamescore
+      });
     console.log("Done Everything");
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Quiz Done.',
+      duration: 8000,
+      position: 'bottom',
+      color: 'primary'
+    });
+    toast.present();
   }
 
 }

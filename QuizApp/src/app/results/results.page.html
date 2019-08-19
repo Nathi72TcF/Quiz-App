@@ -1,9 +1,21 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>results</ion-title>
+  <ion-toolbar class="Align" color="primary">
+    <ion-title>Results</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-card>
+    <ion-list *ngFor="let resultzz of results">
+      <h3><b>{{ resultzz.results }}</b></h3>
+      <ion-item *ngFor="let tcf of resultzz.value">
+        <ion-label>{{ tcf }}</ion-label>
+        <ion-radio slot="start" value="{{ tcf }}"></ion-radio>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+  <!-- Go to Home -->
+  <ion-card class="Align">
+    <ion-button shape="round" [routerLink]="['/home']">Home</ion-button>
+  </ion-card>
 </ion-content>
