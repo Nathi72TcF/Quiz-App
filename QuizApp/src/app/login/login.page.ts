@@ -28,7 +28,7 @@ export class LoginPage implements OnInit {
 
   login() {
     this.quizService.login(this.email, this.password).then(data => {
-      console.log(data);
+      // console.log(data);
       if (data.operationType == "signIn") {
         this.router.navigate(['/home']);
         this.presentToast();

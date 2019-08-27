@@ -7,11 +7,14 @@
 <ion-content>
   <ion-card>
     <ion-list *ngFor="let resultzz of results">
-      <h3><b>{{ resultzz.results }}</b></h3>
-      <ion-item *ngFor="let tcf of resultzz.value">
-        <ion-label>{{ tcf }}</ion-label>
-        <ion-radio slot="start" value="{{ tcf }}"></ion-radio>
-      </ion-item>
+      <h5>{{ resultzz.catID }}</h5><br>
+      <h3><b>Question {{ resultzz.counter }}</b></h3><br>
+      <h5><b>{{ resultzz.questions }}</b></h5><br>
+      <h5><b>Your Answer: {{ resultzz.options.userAnswer }}</b></h5><br>
+      <!-- <h5><b>{{ resultzz.options.userBooleanScore }}</b></h5> -->
+      <h5 *ngIf="resultzz.options.userBooleanScore"><b>Correct Answer</b></h5><br>
+      <h5 *ngIf="!resultzz.options.userBooleanScore"><b>Wrong Answer</b></h5><br>
+      <h5>=====================</h5>
     </ion-list>
   </ion-card>
   <!-- Go to Home -->
@@ -19,3 +22,9 @@
     <ion-button shape="round" [routerLink]="['/home']">Home</ion-button>
   </ion-card>
 </ion-content>
+
+<!-- <ion-item>
+  <ion-label>User Answer: {{ tcf.options.userAnswer }}<br>
+  Result: {{ tcf.options.userBooleanScore }} </ion-label>
+   <ion-radio slot="start" value="{{ tcf.userAnswer }}"></ion-radio>
+</ion-item> -->

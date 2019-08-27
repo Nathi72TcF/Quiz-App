@@ -1,12 +1,15 @@
+import { Key } from 'protractor';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
+import { resolve } from 'dns';
+import { reject } from 'q';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
 
-  database = firebase.database();
+  database = firebase.database().ref();
 
   // getting from database
   userId;
@@ -16,7 +19,9 @@ export class QuizService {
 
   name;
   id;
-
+  ////// Delete
+  categoryArrayRes = [];
+  ///////////////
   // database objects (quiz ts)
   catName;
   myCategories = [];
@@ -37,7 +42,22 @@ export class QuizService {
   user;
   uid;
 
-  constructor() { }
+  // Displaying data results
+  // gotData;
+  errData;
+  catID;
+
+  // getting data from users table
+  userzArray = [];
+  userNamez;
+  userSurname;
+  userAge;
+  userContact;
+  userEmail;
+  userPaswword;
+  userUIDUID;
+
+  constructor() {}
 
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // log in, sign up and register code
@@ -120,26 +140,55 @@ export class QuizService {
     });
   }
 
+  getUserInformation() {
+    return new Promise ((resolve) => {
+      this.clearArray(this.userzArray);
+      const rootRef = firebase.database().ref('users/' + this.userUID);
+      rootRef.on('value', (data) => {
+      const userzz = data.val();
+      this.userNamez = userzz.username;
+      this.userSurname = userzz.surnamez;
+      this.userAge = userzz.agez;
+      this.userContact = userzz.contactz;
+      this.userEmail = userzz.emails;
+      this.userzArray.push({
+        name: this.userNamez,
+        surname: this.userSurname,
+        age: this.userAge,
+        contact: this.userContact,
+        email: this.userEmail
+        // userzz
+      });
+      resolve(this.userzArray);
+      // console.log(this.userzArray);
+    });
+      return this.userzArray;
+    });
+  }
+
   ////////////////////////////////////////////////////////////////////////////////
 
   // data for category
   getcat() {
-    this.clearArray(this.myCategory);
-    const data = firebase.database().ref().child('categories');
-    data.on('child_added', snap => {
-    this.name = snap.child('catName').val();
+    return new Promise((resolve) => {
+      this.clearArray(this.myCategory);
+      const data = firebase.database().ref().child('categories');
+      data.on('child_added', snap => {
+      this.name = snap.child('catName').val();
     // console.log(this.name);
-    this.id = snap.child('ID').val();
+      this.id = snap.child('ID').val();
     // console.log(this.id);
     // console.log('Heres your key: ' + key);
-    this.myCategory.push({
-    ID: this.id,
-    categories: this.name,
-  });
+      this.myCategory.push({
+      ID: this.id,
+      categories: this.name,
+      });
+      resolve(this.myCategory);
     // console.log(this.myCategory);
     // console.log(this.myCategory + ' ' + key);
-    });
-    return this.myCategory;
+        });
+      return this.myCategory;
+      });
   }
 
   UserInfor() {
@@ -197,47 +246,48 @@ export class QuizService {
   }
  }
 
- ///////////////////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////////////
+ // category for results
+ getCatRes(userId) {
+   console.log(userId);
+   let catRes =  firebase.database().ref().child('Results/' + userId);
+   catRes.on('child_added', snapshot => {
+      this.catID = snapshot.key;
+      console.log(this.catID);
+      this.categoryArrayRes.push({
+        key: this.catID
+      });
+      });
+   console.log(this.categoryArrayRes);
+   return this.categoryArrayRes;
+ }
+
+ //  getCatRes() {
+//   let catID;
+//   return firebase.database().ref('Results' + this.userId).then((snapshot) => {
+//     catID = snapshot.Key;
+//   });
+//   return catID;
+// }
+
+
  // get results from firebase
  getResults(userId) {
   this.Counter = 0;
+  let resultsquestion;
+  let gameID;
+  let values;
   this.clearArray(this.myResults);
-  const rootRef = firebase.database().ref().child('Results/' + userId);
-  rootRef.once('value', (snapshot) => {
-      const value = snapshot.val();
-      console.log(value);
+ // tslint:disable-next-line: align
+ return firebase.database().ref().child('Results/' + userId +  name).once('value').then( (snapshot) => {
+      const values = snapshot.val();
+      console.log(values);
 
-      // tslint:disable-next-line: forin
-      for (const key in value) {
-        this.myResults.push({
-          category_id: key,
-          value: Object.values(value[key]),
-          results: Object.keys(value[key]),
-          values: value
-        });
-        console.log(this.myResults);
-        console.log(key);
-        console.log(value);
-      }
+      return snapshot.val();
+
     });
-  return this.myResults;
+  // return this.myResults;
   // console.log(this.myResults);
  }
-
-//  getResults() {
-//   var checking = firebase.database().ref().child('Results');
-//   checking.on('child_added', snap =>{
-//      this.score = snap.child('usersScore').val();
-//      let key = snap.key
-//      console.log('Heres your key: ' + key);
-//      console.log(this.score);
-//      this.myResults.push({
-//       usersScore: this. score,
-//       cal_key: key
-//   });
-//      console.log(this.myResults);
-//   });
-//   return this.myResults;
-// }
 
 }

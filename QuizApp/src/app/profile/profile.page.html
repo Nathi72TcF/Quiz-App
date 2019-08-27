@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar class="Align" color="primary">
+    <ion-title>User Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let usered of used" class="Align">
+    <ion-card-header>
+      <ion-card-subtitle><b><strong>User Information</strong></b></ion-card-subtitle>
+      <div class="ion-padding" class="Align">
+        <img src="../../assets/images/100913881-user-icon-vector-male.jpg" width="100%" height="auto">
+      </div>
+      <ion-card-title><b>{{ usered.name }}</b></ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content><b><strong>
+      Surname:   {{ usered.surname }}<br>
+      Age:   {{ usered.age }}<br>
+      Contact:   {{ usered.contact }}<br>
+      Email:   {{ usered.email }}
+    </strong></b></ion-card-content>
+  </ion-card>
+
+  <ion-card class="Align">
+    <ion-button [routerLink]="['/home']" shape="round"><ion-icon name="home"></ion-icon></ion-button>
+  </ion-card>
+</ion-content>

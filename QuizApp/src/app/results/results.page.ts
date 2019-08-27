@@ -9,8 +9,8 @@ import * as firebase from 'firebase';
   styleUrls: ['./results.page.scss'],
 })
 export class ResultsPage implements OnInit {
-
-  results;
+  resultsCat = [];
+  results = [];
   userId;
 
   constructor(
@@ -18,10 +18,43 @@ export class ResultsPage implements OnInit {
     private router: Router
     ) {
     this.userId = this.quizService.UserInfor();
-    console.log(this.userId);
+    this.resultsCat =  this.quizService.getCatRes(this.userId);
+    // console.log(this.userId);
+    // console.log(this.resultsCat);
 
-    this.results = this.quizService.getResults(this.userId);
-    console.log(this.results);
+    this.clearArray(this.results);
+    this.quizService.getResults(this.userId).then(data => {
+      let Counter;
+      this.clearArray(this.results);
+      // tslint:disable-next-line: forin
+      for (let key in data) {
+        Counter = 1;
+        var catz = key
+        // console.log(data[key]);
+        // console.log(data);
+        // console.log(key);
+        for (let key2 in data[key]) {
+          // tslint:disable-next-line: forin
+          // console.log(key2);
+          // console.log( data[key][key2]);
+          // tslint:disable-next-line: forin
+          for (let key3 in data[key][key2]) {
+            // console.log(key3);
+            // console.log(data[key][key2][key3]);
+            this.results.push({
+              counter: Counter++,
+              catID: catz,
+              questions: key3,
+              options: (data[key][key2][key3]),
+            });
+          }
+        }
+
+
+        console.log(this.results);
+      }
+    });
+
 
     // login guard
     firebase.auth().onAuthStateChanged((user) => {
@@ -34,7 +67,12 @@ export class ResultsPage implements OnInit {
     });
    }
 
+   clearArray(array) {
+    for (let i = 0; i < array.length; i++) {
+      array.splice(i);
+  }
+ }
+
   ngOnInit() {
   }
-
 }
